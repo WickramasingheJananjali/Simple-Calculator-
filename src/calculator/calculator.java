@@ -9,7 +9,7 @@ package calculator;
  *
  * @author hp
  */
-public class calculator extends javax.swing.JFrame {
+public class calculator extends javax.swing.JFrame implements Calculations {
 
     /**
      * Creates new form calculator
@@ -368,49 +368,75 @@ public class calculator extends javax.swing.JFrame {
 
     private void PercentageButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_PercentageButtonActionPerformed
         // TODO add your handling code here:
+        if ((CalInput.getText().length() > 0)&&(CalScreen.getText().length() > 0)) {
+            toBeCalculatedValue = Double.parseDouble(CalInput.getText());
+            percentage(Double.parseDouble(CalScreen.getText().split(" ")[0]),toBeCalculatedValue);
+        }
+        
+            
     }//GEN-LAST:event_PercentageButtonActionPerformed
 
     private void SqrtButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_SqrtButtonActionPerformed
         // TODO add your handling code here:
+        toBeCalculatedValue = Double.parseDouble(CalInput.getText());
+        sqrRoot(toBeCalculatedValue);
     }//GEN-LAST:event_SqrtButtonActionPerformed
 
     private void x2ButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_x2ButtonActionPerformed
         // TODO add your handling code here:
+        if(CalInput.getText().length()>0){
+            toBeCalculatedValue = Double.parseDouble(CalInput.getText());
+            square(toBeCalculatedValue);
+        }
     }//GEN-LAST:event_x2ButtonActionPerformed
 
     private void OneByXButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_OneByXButtonActionPerformed
         // TODO add your handling code here:
+         if(CalInput.getText().length()>0){
+            toBeCalculatedValue = Double.parseDouble(CalInput.getText());
+            oneByX(toBeCalculatedValue);
+        }
     }//GEN-LAST:event_OneByXButtonActionPerformed
 
     private void CEButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CEButtonActionPerformed
         // TODO add your handling code here:
+         CalInput.setText("");
+         isDecimal = false;
+         
     }//GEN-LAST:event_CEButtonActionPerformed
 
     private void CButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CButtonActionPerformed
         // TODO add your handling code here:
         CalInput.setText("");
         CalScreen.setText("");
-        
+        isDecimal = false;
+
     }//GEN-LAST:event_CButtonActionPerformed
 
     private void BackButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BackButtonActionPerformed
         // TODO add your handling code here:
-        String value =  CalInput.getText();
+        String value = CalInput.getText();
         int length = value.length();
-        
-        if(length > 0){
+
+        if (length > 0) {
             StringBuilder builder = new StringBuilder(value);
-            builder.deleteCharAt(length-1);
+            builder.deleteCharAt(length - 1);
             CalInput.setText(builder.toString());
         }
     }//GEN-LAST:event_BackButtonActionPerformed
 
     private void DivitionButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_DivitionButtonActionPerformed
         // TODO add your handling code here:
+        sign = "/";
+        if (CalInput.getText().length() > 0) {
+
+            storeToBeCalculatedValue(sign);
+        }
+        isDecimal = false;
     }//GEN-LAST:event_DivitionButtonActionPerformed
 
     private void no7ButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_no7ButtonActionPerformed
-       CalInput.setText(CalInput.getText() + "7");
+        CalInput.setText(CalInput.getText() + "7");
     }//GEN-LAST:event_no7ButtonActionPerformed
 
     private void no8ButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_no8ButtonActionPerformed
@@ -423,6 +449,11 @@ public class calculator extends javax.swing.JFrame {
 
     private void MultiplicationButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_MultiplicationButtonActionPerformed
         // TODO add your handling code here:
+        sign = "*";
+        if (CalInput.getText().length() > 0) {
+            storeToBeCalculatedValue(sign);
+        }
+        isDecimal = false;
     }//GEN-LAST:event_MultiplicationButtonActionPerformed
 
     private void no6ButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_no6ButtonActionPerformed
@@ -439,57 +470,153 @@ public class calculator extends javax.swing.JFrame {
 
     private void SubtractionButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_SubtractionButtonActionPerformed
         // TODO add your handling code here:
+        sign = "-";
+        if (CalInput.getText().length() > 0) {
+            storeToBeCalculatedValue(sign);
+        }
+        isDecimal = false;
     }//GEN-LAST:event_SubtractionButtonActionPerformed
 
     private void AdditionButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_AdditionButtonActionPerformed
         // TODO add your handling code here:
+        sign = "+";
+        if (CalInput.getText().length() > 0) {
+            storeToBeCalculatedValue(sign);
+        }
+        isDecimal = false;
     }//GEN-LAST:event_AdditionButtonActionPerformed
 
     private void no3ButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_no3ButtonActionPerformed
-           CalInput.setText(CalInput.getText() + "3");
+        CalInput.setText(CalInput.getText() + "3");
     }//GEN-LAST:event_no3ButtonActionPerformed
 
     private void no2ButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_no2ButtonActionPerformed
-            CalInput.setText(CalInput.getText() + "2");
+        CalInput.setText(CalInput.getText() + "2");
 
     }//GEN-LAST:event_no2ButtonActionPerformed
 
     private void no1ButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_no1ButtonActionPerformed
-           CalInput.setText(CalInput.getText() + "1");
+        CalInput.setText(CalInput.getText() + "1");
     }//GEN-LAST:event_no1ButtonActionPerformed
 
     private void EqualsButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_EqualsButtonActionPerformed
         // TODO add your handling code here:
+        if (CalInput.getText().length() > 0) {
+            double b = Double.parseDouble(CalInput.getText());
+            switch (sign) {
+                case "+":
+                    add(toBeCalculatedValue, b);
+                    break;
+                case "-":
+                    substract(toBeCalculatedValue, b);
+                    break;
+                case "*":
+                    multiply(toBeCalculatedValue, b);
+                    break;
+                case "/":
+                    divide(toBeCalculatedValue, b);
+                    break;
+            }
+        }
+        isDecimal = false;
     }//GEN-LAST:event_EqualsButtonActionPerformed
 
     private void PlusOrMinusButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_PlusOrMinusButtonActionPerformed
         // TODO add your handling code here:
         String value = CalInput.getText();
-        
-        if(!value.contains("-")){
-            CalInput.setText( "-" + value);
-        }
-        
-        else{
-            try{
-            CalInput.setText(value.split("-")[1]);
-            }
-            catch(IndexOutOfBoundsException e){
+
+        if (!value.contains("-")) {
+            CalInput.setText("-" + value);
+        } else {
+            try {
+                CalInput.setText(value.split("-")[1]);
+            } catch (IndexOutOfBoundsException e) {
                 CalInput.setText("");
             }
         }
     }//GEN-LAST:event_PlusOrMinusButtonActionPerformed
 
     private void DecimalPointButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_DecimalPointButtonActionPerformed
-        if(!isDecimal){
-        CalInput.setText(CalInput.getText() + ".");
-        isDecimal = true;
+        if (!isDecimal) {
+            CalInput.setText(CalInput.getText() + ".");
+            isDecimal = true;
         }
     }//GEN-LAST:event_DecimalPointButtonActionPerformed
 
     private void no0ButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_no0ButtonActionPerformed
-           CalInput.setText(CalInput.getText() + "0");
+        CalInput.setText(CalInput.getText() + "0");
     }//GEN-LAST:event_no0ButtonActionPerformed
+
+    @Override
+    public void add(double a, double b) {
+        setResults(a + b);
+        //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public void substract(double a, double b) {
+        setResults(a - b);
+
+        //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public void multiply(double a, double b) {
+
+        setResults(a * b);
+        //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public void divide(double a, double b) {
+
+        setResults(a / b);
+        //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    private void setResults(double result) {
+        CalInput.setText(Double.toString(result));
+        CalScreen.setText(" ");
+    }
+
+    private void storeToBeCalculatedValue(String sign) {
+
+        String value = CalInput.getText();
+        toBeCalculatedValue = Double.parseDouble(value);
+        CalScreen.setText(value + " " + sign);
+        CalInput.setText(" ");
+
+    }
+
+    private void percentage(double a, double b) {
+
+        switch (sign) {
+            case "+":
+                add(((a*b)/100),a);
+                break;
+            case "-":
+                substract(a,((a*b)/100));
+                break;
+            case "*":
+                multiply(((a*b)/100),a);
+                break;
+            case "/":
+                divide(a,((a*b)/100));
+                break;
+        }
+    }
+    private void sqrRoot(double a){
+        
+       CalInput.setText(Double.toString(Math.sqrt(a)));
+    }
+    
+    private void square(double a){
+        CalInput.setText(Double.toString(Math.pow(a, 2)));
+    }
+    
+    private void  oneByX(double a){
+        CalInput.setText(Double.toString(1/a));
+    }
 
     /**
      * @param args the command line arguments
@@ -525,8 +652,11 @@ public class calculator extends javax.swing.JFrame {
             }
         });
     }
+
     //variable to handle decimal point
     private boolean isDecimal = false;
+    private String sign;
+    private double toBeCalculatedValue;
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton AdditionButton;
     private javax.swing.JButton BackButton;
